@@ -6,7 +6,18 @@
   "author": "Nathan Skiles",
   "license": "MIT",
   "dependencies": {
+    "csv": "^6.2.2",
     "dotenv": "^16.0.3",
-    "eslint": "^8.27.0"
+    "eslint": "^8.0.1"
+  },
+  "type": "module",
+  "devDependencies": {
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0"
+  },
+  "scripts": {
+    "start": "node app.js"
   }
 }
