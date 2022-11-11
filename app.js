@@ -27,7 +27,6 @@ const loadEmails = async () => {
 const blackListEmail = async (email) => {
   const body = JSON.stringify({ sender: `${email}`, channel: 'email', list: 'blacklist' })
   const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${API_KEY}` }
-  console.log(body)
   try {
     await fetch(spamEndpoint, {
       method: 'put',
