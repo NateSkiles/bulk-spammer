@@ -1,0 +1,12 @@
+{
+  "name": "bulk-spammer",
+  "version": "1.0.0",
+  "description": "Add emails to spam blacklist in bulk from CSV.",
+  "main": "index.js",
+  "author": "Nathan Skiles",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "eslint": "^8.27.0"
+  }
+}
