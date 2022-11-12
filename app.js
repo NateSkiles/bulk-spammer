@@ -1,50 +1,15 @@
-import * as fs from 'fs'
-import { parse } from 'csv'
-import { API_KEY, ORG_NAME } from './utils/api.js'
+import { blackListEmail, loadEmails } from './utils/index.js'
 
-const spamEndpoint = `https://${ORG_NAME}.api.kustomerapp.com/v1/spam/senders`
-
-const loadEmails = async () => {
-  return new Promise((resolve, reject) => {
-    const emails = []
-    const readingStream = fs.createReadStream('test.csv')
-    readingStream
-      .pipe(parse())
-      .on('data', (row) => {
-        emails.push(row[0])
+const app = () => {
+  const fileNames = process.argv.slice(2)
+  if (!fileNames.length) return console.log('❗️ Please include a file name.')
+  fileNames.forEach((file) => loadEmails(file)
+    .catch(() => console.log(`${file} not found`))
+    .then((emails) => {
+      emails.forEach(email => {
+        blackListEmail(email)
       })
-      .on('end', () => {
-        console.log('Emails imported')
-        resolve(emails)
-        readingStream.close()
-      })
-      .on('error', (e) => {
-        reject(e)
-      })
-  })
+    }))
 }
 
-const blackListEmail = async (email) => {
-  const body = JSON.stringify({ sender: `${email}`, channel: 'email', list: 'blacklist' })
-  const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${API_KEY}` }
-  try {
-    await fetch(spamEndpoint, {
-      method: 'put',
-      body,
-      headers
-    })
-      .then((res) => {
-        return res.json()
-      })
-      .then((data) => console.log(data))
-    return
-  } catch (e) {
-    return console.error(e)
-  }
-}
-
-loadEmails().then((emails) => {
-  emails.forEach(email => {
-    blackListEmail(email)
-  })
-})
+app()
